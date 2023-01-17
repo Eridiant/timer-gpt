@@ -24,10 +24,18 @@
   <button id="start-btn" onclick="startTimer()">Start</button>
   <button id="pause-btn" onclick="pauseTimer()" disabled>Pause</button>
   <button id="restart-btn" onclick="restartTimer()" disabled>Restart</button>
+  <button id="lap-btn" onclick="lapTimer()" disabled>Lap</button>
+  <div id="laps">
+    <h2>Laps:</h2>
+  </div>
+  <div id="total-time">
+    <h2>Total time:</h2>
+  </div>
   <script>
     let count = 0;
     let tenths = 0;
     let intervalId;
+    let laps = [];
 
     function startTimer() {
       intervalId = setInterval(() => {
@@ -39,6 +47,7 @@
         let minutes = Math.floor(count / 60);
         let seconds = count % 60;
         document.getElementById("timer").innerHTML = `${minutes} : ${seconds} : ${tenths}`;
+        document.getElementById("lap-btn").disabled = false;
       }, 100);
       document.getElementById("start-btn").disabled = true;
       document.getElementById("pause-btn").disabled = false;
@@ -50,16 +59,33 @@
       document.getElementById("start-btn").disabled = false;
       document.getElementById("pause-btn").disabled = true;
       document.getElementById("restart-btn").disabled = false;
+      document.getElementById("lap-btn").disabled = true;
     }
 
     function restartTimer() {
       count = 0;
       tenths = 0;
+      laps = [];
       document.getElementById("timer").innerHTML = "0 : 0 : 0";
+      document.getElementById("laps").innerHTML = "<h2>Laps:</h2>";
+      document.getElementById("total-time").innerHTML = "<h2>Total time:</h2>";
       document.getElementById("start-btn").disabled = false;
       document.getElementById("pause-btn").disabled = true;
       document.getElementById("restart-btn").disabled = true;
-    }
-  </script>
+      document.getElementById("lap-button").disabled = true;
+}
+function lapTimer() {
+  let minutes = Math.floor(count / 60);
+  let seconds = count % 60;
+  let lapTime = `${minutes} : ${seconds} : ${tenths}`;
+  laps.push(lapTime);
+  let lapList = "";
+  for (let i = 0; i < laps.length; i++) {
+    lapList += `<p>Lap ${i + 1}: ${laps[i]}</p>`;
+  }
+  document.getElementById("laps").innerHTML = `<h2>Laps:</h2> ${lapList}`;
+  document.getElementById("total-time").innerHTML = `<h2>Total time: ${lapTime}</h2>`;
+}
+ </script>
 </body>
 </html>
