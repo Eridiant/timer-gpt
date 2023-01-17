@@ -26,15 +26,20 @@
   <button id="restart-btn" onclick="restartTimer()" disabled>Restart</button>
   <script>
     let count = 0;
+    let tenths = 0;
     let intervalId;
 
     function startTimer() {
       intervalId = setInterval(() => {
-        count++;
+        tenths++;
+        if (tenths === 10) {
+          count++;
+          tenths = 0;
+        }
         let minutes = Math.floor(count / 60);
         let seconds = count % 60;
-        document.getElementById("timer").innerHTML = `${minutes} : ${seconds}`;
-      }, 1000);
+        document.getElementById("timer").innerHTML = `${minutes} : ${seconds} : ${tenths}`;
+      }, 100);
       document.getElementById("start-btn").disabled = true;
       document.getElementById("pause-btn").disabled = false;
       document.getElementById("restart-btn").disabled = true;
@@ -49,7 +54,8 @@
 
     function restartTimer() {
       count = 0;
-      document.getElementById("timer").innerHTML = "0 : 0";
+      tenths = 0;
+      document.getElementById("timer").innerHTML = "0 : 0 : 0";
       document.getElementById("start-btn").disabled = false;
       document.getElementById("pause-btn").disabled = true;
       document.getElementById("restart-btn").disabled = true;
