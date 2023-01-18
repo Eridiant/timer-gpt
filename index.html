@@ -1,11 +1,7 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script type="module" src="timer.js"></script>
+<head>
+  <title>JavaScript Timer</title>
   <style>
     button {
       padding: 10px 20px;
@@ -22,16 +18,42 @@
       cursor: not-allowed;
     }
   </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="text/babel">
-      import React from 'react';
-      import ReactDOM from 'react-dom';
-      import Timer from './timer.js';
+</head>
+<body>
+  <h1 id="timer"></h1>
+  <button id="start-btn" onclick="startTimer()">Start</button>
+  <button id="pause-btn" onclick="pauseTimer()" disabled>Pause</button>
+  <button id="restart-btn" onclick="restartTimer()" disabled>Restart</button>
+  <script>
+    let count = 0;
+    let intervalId;
 
-      ReactDOM.render(<Timer />, document.getElementById('root'));
-    </script>
-  </body>
+    function startTimer() {
+      intervalId = setInterval(() => {
+        count++;
+        let minutes = Math.floor(count / 60);
+        let seconds = count % 60;
+        document.getElementById("timer").innerHTML = `${minutes} : ${seconds}`;
+      }, 1000);
+      document.getElementById("start-btn").disabled = true;
+      document.getElementById("pause-btn").disabled = false;
+      document.getElementById("restart-btn").disabled = true;
+    }
+
+    function pauseTimer() {
+      clearInterval(intervalId);
+      document.getElementById("start-btn").disabled = false;
+      document.getElementById("pause-btn").disabled = true;
+      document.getElementById("restart-btn").disabled = false;
+    }
+
+    function restartTimer() {
+      count = 0;
+      document.getElementById("timer").innerHTML = "0 : 0";
+      document.getElementById("start-btn").disabled = false;
+      document.getElementById("pause-btn").disabled = true;
+      document.getElementById("restart-btn").disabled = true;
+    }
+  </script>
+</body>
 </html>
-
